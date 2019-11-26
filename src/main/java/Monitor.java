@@ -35,7 +35,7 @@ class Monitor {
     private static List<String> symptom;
     private static final int period = 1000;
     private static int i = 0;
-    private String gw_current_SYMP = "N/A";
+    public String gw_current_SYMP = "N/A";
 
     void start() {
         Main.logger(this.getClass().getSimpleName(), "Start monitoring of " + Knowledge.gw);
@@ -49,9 +49,9 @@ class Monitor {
     private void process_lat() {
         while (Main.run)
             try {
-                Thread.sleep(period);
+                Thread.sleep(period * 5);
                 ResultSet rs = Main.shared_knowledge.select_from_tab();
-                //print_rs(rs, k);
+                print_nice_rs(rs);
                 double[] prediction = predict_next_lat(rs);
                 boolean isOk = true;
                 for (int j = 0; j < Knowledge.horizon; j++) {
@@ -83,7 +83,7 @@ class Monitor {
             while (true)
                 try {
                     //TODO: Remove this
-                    Thread.sleep(period / 5);
+                    Thread.sleep(period);
 
                     Main.shared_knowledge.insert_in_tab(new java.sql.Timestamp(new java.util.Date().getTime()), get_fake_data());
                 } catch (InterruptedException e) {
@@ -108,6 +108,7 @@ class Monitor {
 
     //ARIMA-based Forecasting
     private double[] predict_next_lat(ResultSet rs) throws SQLException {
+        rs.first();
         double[] history = new double[Knowledge.moving_wind];
         double[] p = new double[Knowledge.horizon];
         int j = Knowledge.moving_wind - 1;
@@ -120,13 +121,17 @@ class Monitor {
         //ArimaOrder modelOrder = ArimaOrder.order(0, 0, 0, 1, 1, 1);
         Arima model = Arima.model(timeSeries, modelOrder);
         Forecast forecast = model.forecast(Knowledge.moving_wind);
-        for (int k = 0; k < Knowledge.horizon; k++)
+        System.out.print("Point Estimates : ");
+        for (int k = 0; k < Knowledge.horizon; k++) {
             p[k] = forecast.pointEstimates().at(k);
-
+            System.out.print(p[k] + "; ");
+        }
+        System.out.println("");
         return p;
     }
 
-    private void print_rs(ResultSet rs, Knowledge k) throws SQLException {
+    private void print_nice_rs(ResultSet rs) throws SQLException {
+        rs.first();
         AsciiTable at = new AsciiTable();
         at.addRule();
         at.addRow("Timestamp", "Latency_in_" + Knowledge.gw);
@@ -137,19 +142,9 @@ class Monitor {
         }
         at.getContext().setGrid(A7_Grids.minusBarPlusEquals());
         at.getRenderer().setCWC(new CWC_LongestWord());
-        Main.logger(this.getClass().getSimpleName(), at.render());
+        System.out.println(this.getClass().getSimpleName() + " : ");
+        System.out.println(at.render());
 
-    }
-
-    String getsymptom() {
-        synchronized (gw_current_SYMP) {
-            try {
-                gw_current_SYMP.wait();
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return gw_current_SYMP;
     }
 
     private void update_symptom(String symptom) {

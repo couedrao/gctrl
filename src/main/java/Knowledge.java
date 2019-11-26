@@ -30,8 +30,8 @@ class Knowledge {
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
 
-    static final int moving_wind = 20;
-    static final int horizon = 5;
+    static final int moving_wind = 10;
+    static final int horizon = 3;
     static final String gw = "GW_I";
     static final double gw_lat_threshold = 20;
 
@@ -171,11 +171,12 @@ class Knowledge {
         //Main.logger("Select the last " + n + " latencies");
         Connection conn = getDBConnection();
         String SelectQuery = "select TOP " + moving_wind + " * from " + Knowledge.gw + "_LAT" + " ORDER BY id DESC";
-        PreparedStatement select;
+        //PreparedStatement select;
         ResultSet rs = null;
         try {
-            select = conn.prepareStatement(SelectQuery);
-            rs = select.executeQuery();
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            // select = conn.prepareStatement(SelectQuery);
+            rs = stmt.executeQuery(SelectQuery);
         } catch (SQLException e) {
             System.out.println("Exception Message " + e.getLocalizedMessage());
         } catch (Exception e) {

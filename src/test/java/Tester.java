@@ -12,16 +12,16 @@ class Tester {
 
     public static void main(String[] args) throws Exception {
         k.start();
-        List<String> worklow_lists = k.get_worklow_lists();
+        List<String> workflow_lists = k.get_worklow_lists();
         while (Main.run) {
             logger("You are in test mode! The following actions can be performed : ");
-            for (int i = 0; i < worklow_lists.size(); i++) {
-                logger("[" + i + "] :" + worklow_lists.get(i));
+            for (int i = 0; i < workflow_lists.size(); i++) {
+                logger("[" + i + "] :" + workflow_lists.get(i));
             }
-            logger("Select any number in [0-" + (worklow_lists.size() - 1) + "] to continue");
+            logger("Select any number in [0-" + (workflow_lists.size() - 1) + "] to continue");
             int input = new Scanner(System.in).nextInt();
-            if (input < worklow_lists.size() )
-                logger("Execution of Action : [" + worklow_lists.get(input) + "]");
+            if (input < workflow_lists.size() )
+                logger("Execution of Action : [" + workflow_lists.get(input) + "]");
             else logger("(-_-)");
 
             //Call Effectors

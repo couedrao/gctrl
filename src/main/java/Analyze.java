@@ -15,39 +15,48 @@ import java.util.List;
 //*
 @SuppressWarnings({"SameParameterValue", "InfiniteLoopStatement", "LoopConditionNotUpdatedInsideLoop", "SynchronizeOnNonFinalField"})
 class Analyze {
-    private String gw_current_RFC = "";
+    public String gw_current_RFC = "";
 
     void start() {
         Main.logger(this.getClass().getSimpleName(), "Start Analyzing");
-        List<String> symptoms =Main.shared_knowledge.get_symptoms();
-        List<String> rfcs = Main.shared_knowledge.get_rfc();
 
         while (Main.run) {
-            //Symptom Receiver
-            String current_symptom = Main.monitor.getsymptom();
-            Main.logger(this.getClass().getSimpleName(), "Received Symptom : " + current_symptom);
 
-            //Rule-based RFC Generator
-            if (current_symptom.contentEquals(symptoms.get(0)) || current_symptom.contentEquals(symptoms.get(2))) {
-                Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(0));
-                update_rfc(rfcs.get(0));
-            } else if (current_symptom.contentEquals(symptoms.get(1))) {
-                Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(1));
-                update_rfc(rfcs.get(1));
-            }
+            String current_symptom = get_symptom();
+            //Main.logger(this.getClass().getSimpleName(), "Received Symptom : " + current_symptom);
+
+            update_rfc(rfc_generator(current_symptom));
         }
     }
 
-    String get_rfc() {
-        synchronized (gw_current_RFC) {
+    //Symptom Receiver
+    private String get_symptom() {
+        synchronized (Main.monitor.gw_current_SYMP) {
             try {
-                gw_current_RFC.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                Main.monitor.gw_current_SYMP.wait();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
             }
         }
-        return gw_current_RFC;
+        return Main.monitor.gw_current_SYMP;
     }
+
+    //Rule-based RFC Generator
+    private String rfc_generator(String symptom) {
+        List<String> symptoms = Main.shared_knowledge.get_symptoms();
+        List<String> rfcs = Main.shared_knowledge.get_rfc();
+
+        if (symptom.contentEquals(symptoms.get(0)) || symptom.contentEquals(symptoms.get(2))) {
+            Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(0));
+            return rfcs.get(0);
+        } else if (symptom.contentEquals(symptoms.get(1))) {
+            Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(1));
+            return rfcs.get(1);
+        } else
+            return null;
+
+    }
+
 
     private void update_rfc(String rfc) {
 
