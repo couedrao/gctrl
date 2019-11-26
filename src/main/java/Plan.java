@@ -28,8 +28,11 @@ class Plan {
         List<String> rfcs = Main.shared_knowledge.get_rfc();
         List<String> plans = Main.shared_knowledge.get_plans();
         while (Main.run) {
+            //RFC Receiver
             String current_rfc = Main.analyze.get_rfc();
             Main.logger(this.getClass().getSimpleName(), "Received RFC : " + current_rfc);
+
+            //Rule-based Plan Generator
             if (current_rfc.contentEquals(rfcs.get(0))) {
                 Main.logger(this.getClass().getSimpleName(), "Plan --> To Execute : " + plans.get(0));
                 update_plan(plans.get(0));

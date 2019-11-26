@@ -23,8 +23,11 @@ class Analyze {
         List<String> rfcs = Main.shared_knowledge.get_rfc();
 
         while (Main.run) {
+            //Symptom Receiver
             String current_symptom = Main.monitor.getsymptom();
             Main.logger(this.getClass().getSimpleName(), "Received Symptom : " + current_symptom);
+
+            //Rule-based RFC Generator
             if (current_symptom.contentEquals(symptoms.get(0)) || current_symptom.contentEquals(symptoms.get(2))) {
                 Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(0));
                 update_rfc(rfcs.get(0));

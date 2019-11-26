@@ -21,8 +21,11 @@ class Execute {
         workflow_lists = Main.shared_knowledge.get_worklow_lists();
 
         while (Main.run) {
+            //Plan Receiver
             String current_plan = Main.plan.get_plan();
             Main.logger(this.getClass().getSimpleName(), "Received Plan : " + current_plan);
+
+            //Rule-based Workflow Generator
             if (current_plan.contentEquals(plans.get(0))) {
                 workflow_0();
             } else if (current_plan.contentEquals(plans.get(1))) {
@@ -36,19 +39,19 @@ class Execute {
 
     private void workflow_0() {
         Main.logger(this.getClass().getSimpleName(), "Workflow : " + workflow_lists.get(0));
-
+        //Call Effectors
         /*TODO*/
     }
 
     private void workflow_1() {
         Main.logger(this.getClass().getSimpleName(), "Workflow : " + workflow_lists.get(1));
-
+        //Call Effectors
         /*TODO*/
     }
 
     private void workflow_2() {
         Main.logger(this.getClass().getSimpleName(), "Workflow : " + workflow_lists.get(2));
-
+        //Call Effectors
         /*TODO*/
     }
 

@@ -45,7 +45,7 @@ class Monitor {
         process_lat();
     }
 
-    //wait and process the latencies in the db
+    //Symptom Generator  (can be modified)
     private void process_lat() {
         while (Main.run)
             try {
@@ -76,6 +76,7 @@ class Monitor {
             }
     }
 
+    //Data Collector TODO : modify
     private void fill_tab() {
         new Thread(() -> {
             Main.logger(this.getClass().getSimpleName(), "Filling db with latencies");
@@ -95,6 +96,7 @@ class Monitor {
     }
 
     private int get_data() {
+        //Call Sensors
         /*TODO*/
         return 0;
     }
@@ -104,6 +106,7 @@ class Monitor {
         return i++;
     }
 
+    //ARIMA-based Forecasting
     private double[] predict_next_lat(ResultSet rs) throws SQLException {
         double[] history = new double[Knowledge.moving_wind];
         double[] p = new double[Knowledge.horizon];

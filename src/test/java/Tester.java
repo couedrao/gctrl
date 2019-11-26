@@ -23,6 +23,8 @@ class Tester {
             if (input < worklow_lists.size() )
                 logger("Execution of Action : [" + worklow_lists.get(input) + "]");
             else logger("(-_-)");
+
+            //Call Effectors
             /*TODO : */
         }
     }
