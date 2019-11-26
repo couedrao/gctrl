@@ -34,7 +34,7 @@ import java.util.List;
 class Monitor {
     private static List<String> symptom;
     private static final int period = 1000;
-    private static int i = 0;
+    private static double i = 0;
     public String gw_current_SYMP = "N/A";
 
     void start() {
@@ -101,9 +101,9 @@ class Monitor {
         return 0;
     }
 
-    private int get_fake_data() {
+    private double get_fake_data() {
         //return new Random().nextInt();
-        return i++;
+        return i += 2.5;
     }
 
     //ARIMA-based Forecasting

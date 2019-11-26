@@ -54,14 +54,14 @@ class Knowledge {
 
     }
 
-    void insert_in_tab(Timestamp timestamp, int lat) {
+    void insert_in_tab(Timestamp timestamp, double lat) {
         try (Connection conn = getDBConnection()) {
             PreparedStatement insert;
             String InsertQuery = "INSERT INTO " + Knowledge.gw + "_LAT" + " (id, latency) values" + "(?,?)";
             conn.setAutoCommit(false);
             insert = conn.prepareStatement(InsertQuery);
             insert.setTimestamp(1, timestamp);
-            insert.setInt(2, lat);
+            insert.setDouble(2, lat);
             insert.executeUpdate();
             insert.close();
             conn.commit();
@@ -192,7 +192,7 @@ class Knowledge {
             Statement create;
             conn.setAutoCommit(false);
             create = conn.createStatement();
-            create.execute("CREATE TABLE " + Knowledge.gw + "_LAT" + " (id timestamp primary key, latency int)");
+            create.execute("CREATE TABLE " + Knowledge.gw + "_LAT" + " (id timestamp primary key, latency double )");
             create.close();
             conn.commit();
         } catch (SQLException e) {
