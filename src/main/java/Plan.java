@@ -20,7 +20,7 @@ import java.util.List;
 
 @SuppressWarnings({"InfiniteLoopStatement", "LoopConditionNotUpdatedInsideLoop", "SynchronizeOnNonFinalField"})
 class Plan {
-    private static int i = 0;
+    private static int i;
     public String gw_PLAN = "";
 
     void start() {
@@ -54,7 +54,7 @@ class Plan {
 
         if (rfc.contentEquals(rfcs.get(0))) {
             Main.logger(this.getClass().getSimpleName(), "Plan --> To Execute : " + plans.get(0));
-            i--;
+            i = 0;
             return plans.get(0);
         } else if (rfc.contentEquals(rfcs.get(1))) {
             if (i < 2) {
@@ -67,8 +67,9 @@ class Plan {
                 return plans.get(2);
             }
 
-        } else
+        } else {
             return null;
+        }
     }
 
 

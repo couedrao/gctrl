@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 //
 
 class Main {
-    static final boolean run = true;
+    static boolean run = true;
     static final Monitor monitor = new Monitor();
     static final Analyze analyze = new Analyze();
     static final Plan plan = new Plan();

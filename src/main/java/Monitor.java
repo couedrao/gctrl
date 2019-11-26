@@ -41,12 +41,12 @@ class Monitor {
         Main.logger(this.getClass().getSimpleName(), "Start monitoring of " + Knowledge.gw);
         symptom = Main.shared_knowledge.get_symptoms();
         Main.shared_knowledge.create_lat_tab();
-        fill_tab();
-        process_lat();
+        data_collector(); //in bg
+        symptom_generator();
     }
 
     //Symptom Generator  (can be modified)
-    private void process_lat() {
+    private void symptom_generator() {
         while (Main.run)
             try {
                 Thread.sleep(period * 5);
@@ -77,7 +77,7 @@ class Monitor {
     }
 
     //Data Collector TODO : modify
-    private void fill_tab() {
+    private void data_collector() {
         new Thread(() -> {
             Main.logger(this.getClass().getSimpleName(), "Filling db with latencies");
             while (true)
