@@ -18,7 +18,7 @@ import java.util.List;
 
 //*
 
-@SuppressWarnings({"InfiniteLoopStatement", "LoopConditionNotUpdatedInsideLoop", "SynchronizeOnNonFinalField"})
+@SuppressWarnings({"SynchronizeOnNonFinalField"})
 class Plan {
     private static int i;
     public String gw_PLAN = "";
@@ -52,24 +52,28 @@ class Plan {
         List<String> rfcs = Main.shared_knowledge.get_rfc();
         List<String> plans = Main.shared_knowledge.get_plans();
 
-        if (rfc.contentEquals(rfcs.get(0))) {
+        if ("YourPlansDoNotWork".contentEquals(rfc)) {
+            // Thread.sleep(2000);
+            Main.run = false;
+            Main.logger(this.getClass().getSimpleName(), "All the Plans were executed without success. \n \t\t The loop will stop!");
+            // Terminate JVM
+            System.exit(0);
+        } else if (rfc.contentEquals(rfcs.get(0))) {
             Main.logger(this.getClass().getSimpleName(), "Plan --> To Execute : " + plans.get(0));
             i = 0;
             return plans.get(0);
         } else if (rfc.contentEquals(rfcs.get(1))) {
-            if (i < 2) {
+            if (i == 0) {
                 Main.logger(this.getClass().getSimpleName(), "Plan --> To Execute : " + plans.get(1));
                 i++;
                 return plans.get(1);
-            } else {
+            } else if (i == 1) {
                 Main.logger(this.getClass().getSimpleName(), "Plan --> To Execute : " + plans.get(2));
                 i++;
                 return plans.get(2);
             }
-
-        } else {
-            return null;
         }
+        return null;
     }
 
 

@@ -5,7 +5,6 @@ import java.util.Scanner;
 //* @author couedrao on 25/11/2019.
 //* @project gctrl
 //
-@SuppressWarnings({"InfiniteLoopStatement", "LoopConditionNotUpdatedInsideLoop"})
 class Tester {
 
     private static final Knowledge k = new Knowledge();
