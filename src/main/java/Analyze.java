@@ -13,9 +13,10 @@ import java.util.List;
 //* 2)Influenced by stored knowledge data.
 //* 3)If changes are required, a change request is logically passed to the plan function.
 //*
-@SuppressWarnings({"SameParameterValue", "InfiniteLoopStatement", "LoopConditionNotUpdatedInsideLoop", "SynchronizeOnNonFinalField"})
+@SuppressWarnings({"SameParameterValue", "SynchronizeOnNonFinalField"})
 class Analyze {
     public String gw_current_RFC = "";
+    private static int i;
 
     void start() {
         Main.logger(this.getClass().getSimpleName(), "Start Analyzing");
@@ -48,10 +49,17 @@ class Analyze {
 
         if (symptom.contentEquals(symptoms.get(0)) || symptom.contentEquals(symptoms.get(2))) {
             Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(0));
+            i = 0;
             return rfcs.get(0);
         } else if (symptom.contentEquals(symptoms.get(1))) {
-            Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(1));
-            return rfcs.get(1);
+            i++;
+            if (i < 3) {
+                Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + rfcs.get(1));
+                return rfcs.get(1);
+            } else {
+                Main.logger(this.getClass().getSimpleName(), "RFC --> To plan : " + "YourPlansDoNotWork");
+                return "YourPlansDoNotWork";
+            }
         } else
             return null;
 

@@ -30,10 +30,10 @@ import java.util.List;
 //*
 
 
-@SuppressWarnings({"InfiniteLoopStatement", "LoopConditionNotUpdatedInsideLoop", "SynchronizeOnNonFinalField"})
+@SuppressWarnings({"SynchronizeOnNonFinalField"})
 class Monitor {
     private static List<String> symptom;
-    private static final int period = 1000;
+    private static final int period = 2000;
     private static double i = 0;
     public String gw_current_SYMP = "N/A";
 
@@ -51,7 +51,7 @@ class Monitor {
             try {
                 Thread.sleep(period * 5);
                 ResultSet rs = Main.shared_knowledge.select_from_tab();
-                print_nice_rs(rs);
+                //print_nice_rs(rs);
                 double[] prediction = predict_next_lat(rs);
                 boolean isOk = true;
                 for (int j = 0; j < Knowledge.horizon; j++) {
@@ -80,11 +80,10 @@ class Monitor {
     private void data_collector() {
         new Thread(() -> {
             Main.logger(this.getClass().getSimpleName(), "Filling db with latencies");
-            while (true)
+            while (Main.run)
                 try {
                     //TODO: Remove this
                     Thread.sleep(period);
-
                     Main.shared_knowledge.insert_in_tab(new java.sql.Timestamp(new java.util.Date().getTime()), get_fake_data());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -126,7 +125,7 @@ class Monitor {
             p[k] = forecast.pointEstimates().at(k);
             System.out.print(p[k] + "; ");
         }
-        System.out.println("");
+        System.out.println();
         return p;
     }
 

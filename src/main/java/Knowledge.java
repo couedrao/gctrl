@@ -1,9 +1,7 @@
 import org.h2.tools.DeleteDbFiles;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 //
 
@@ -38,8 +36,16 @@ class Knowledge {
     /*TODO : edit symptom, rfc, workflow_lists, plan*/
     private static final List<String> symptom = Arrays.asList("N/A", "NOK", "OK");
     private static final List<String> rfc = Arrays.asList("DoNotDoAnything", "DecreaseLatencyIn" + gw);
-    private static final List<String> workflow_lists = Arrays.asList("UC1", "UC2+UC3", "UC4+UC5+UC6");
+    private static final List<String> workflow_lists = Arrays.asList("UC1", "UC2/UC3", "UC4/UC5/UC6");
     private static final List<String> plan = Arrays.asList("A", "B", "C");
+    private Map<String, String> gwinfo = new HashMap<>();
+    private List<Map<String, String>> gwsinfo = new ArrayList<>();
+    private String olddestip = "192.168.0.2";
+    private String newdestip;
+    private String oldgwip;
+    private String lbip;
+    private List<String> newgwsip;
+    private String importantsrcip = "192.168.0.1";
 
     void start() throws Exception {
         // delete the H2 database named 'test' in the user home directory
@@ -50,6 +56,15 @@ class Knowledge {
         store_rfcs();
         store_plans();
         store_execution_workflow();
+        //TODO : update gwinfo
+        gwinfo.put("name", "gw");
+        gwinfo.put("image", "alpine:latest");
+        gwinfo.put("net", "new_network");
+
+        gwsinfo.add(0, gwinfo);
+        gwsinfo.add(1, gwinfo);
+        gwsinfo.add(2, gwinfo);
+
         Main.logger(this.getClass().getSimpleName(), "Knowledge Starting");
 
     }
@@ -336,5 +351,69 @@ class Knowledge {
             return null;
         }
 
+    }
+
+    public Map<String, String> getGwinfo() {
+        return gwinfo;
+    }
+
+    public void setGwinfo(Map<String, String> gwinfo) {
+        this.gwinfo = gwinfo;
+    }
+
+    public List<Map<String, String>> getGwsinfo() {
+        return gwsinfo;
+    }
+
+    public void setGwsinfo(List<Map<String, String>> gwsinfo) {
+        this.gwsinfo = gwsinfo;
+    }
+
+    public String getOlddestip() {
+        return olddestip;
+    }
+
+    public void setOlddestip(String olddestip) {
+        this.olddestip = olddestip;
+    }
+
+    public String getNewdestip() {
+        return newdestip;
+    }
+
+    public void setNewdestip(String newdestip) {
+        this.newdestip = newdestip;
+    }
+
+    public String getOldgwip() {
+        return oldgwip;
+    }
+
+    public void setOldgwip(String oldgwip) {
+        this.oldgwip = oldgwip;
+    }
+
+    public String getLbip() {
+        return lbip;
+    }
+
+    public void setLbip(String lbip) {
+        this.lbip = lbip;
+    }
+
+    public List<String> getNewgwsip() {
+        return newgwsip;
+    }
+
+    public void setNewgwsip(List<String> newgwsip) {
+        this.newgwsip = newgwsip;
+    }
+
+    public String getImportantsrcip() {
+        return importantsrcip;
+    }
+
+    public void setImportantsrcip(String importantsrcip) {
+        this.importantsrcip = importantsrcip;
     }
 }
