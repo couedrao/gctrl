@@ -38,14 +38,14 @@ class Knowledge {
     private static final List<String> rfc = Arrays.asList("DoNotDoAnything", "DecreaseLatencyIn" + gw);
     private static final List<String> workflow_lists = Arrays.asList("UC1", "UC2/UC3", "UC4/UC5/UC6");
     private static final List<String> plan = Arrays.asList("A", "B", "C");
-    private Map<String, String> gwinfo = new HashMap<>();
-    private List<Map<String, String>> gwsinfo = new ArrayList<>();
-    private String olddestip = "192.168.0.2";
+    private final Map<String, String> gwinfo = new HashMap<>();
+    private final List<Map<String, String>> gwsinfo = new ArrayList<>();
+    private final String olddestip = "192.168.0.2";
     private String newdestip;
     private String oldgwip;
     private String lbip;
     private List<String> newgwsip;
-    private String importantsrcip = "192.168.0.1";
+    private final String importantsrcip = "192.168.0.1";
 
     void start() throws Exception {
         // delete the H2 database named 'test' in the user home directory
@@ -357,24 +357,12 @@ class Knowledge {
         return gwinfo;
     }
 
-    public void setGwinfo(Map<String, String> gwinfo) {
-        this.gwinfo = gwinfo;
-    }
-
     public List<Map<String, String>> getGwsinfo() {
         return gwsinfo;
     }
 
-    public void setGwsinfo(List<Map<String, String>> gwsinfo) {
-        this.gwsinfo = gwsinfo;
-    }
-
     public String getOlddestip() {
         return olddestip;
-    }
-
-    public void setOlddestip(String olddestip) {
-        this.olddestip = olddestip;
     }
 
     public String getNewdestip() {
@@ -413,7 +401,4 @@ class Knowledge {
         return importantsrcip;
     }
 
-    public void setImportantsrcip(String importantsrcip) {
-        this.importantsrcip = importantsrcip;
-    }
 }
